@@ -1,4 +1,4 @@
-helloworld-mdb: Helloworld Using an MDB (Message-Driven Bean)
+helloworld-mdb: Helloworld Using an MDB (Message-Driven Bean) and Jboss Data Grid with JBOSS A-MQ and EAP
 ============================================================
 Author: Serge Pagop, Andy Taylor, Jeff Mesnil  
 Level: Intermediate  
@@ -17,15 +17,20 @@ This project creates two JMS resources:
 * A queue named `HELLOWORLDMDBQueue` bound in JNDI as `java:/queue/HELLOWORLDMDBQueue`
 * A topic named `HELLOWORLDMDBTopic` bound in JNDI as `java:/topic/HELLOWORLDMDBTopic`
 
+his quickstarts example already twist to replace HORNETQ with JBOSS A-MQ
+
+Sample of JBOSS EAP configuration also provided and documentation can be foune here : <https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_A-MQ/6.3/html-single/Integrating_with_JBoss_Enterprise_Application_Platform/#DeployRar-InstallRar>
+
+This using embedded mode of JBOSS Data Grid
 
 System requirements
 -------------------
 
-The application this project produces is designed to be run on Red Hat JBoss Enterprise Application Platform 6.1 or later. 
+The application this project produces is designed to be run on Red Hat JBoss Enterprise Application Platform 6.1 or later.
 
 All you need to build this project is Java 6.0 (Java SDK 1.6) or later, Maven 3.0 or later.
 
- 
+
 Configure Maven
 ---------------
 
@@ -68,7 +73,7 @@ _NOTE: The following build command assumes you have configured your Maven user s
         14:11:01,060 INFO org.jboss.as.ejb3 JBAS014142: Started message driven bean 'HelloWorldQTopicMDB' with 'hornetq-ra' resource adapter
         14:11:01,070 INFO org.jboss.as.messaging JBAS011601: Bound messaging object to jndi name java:/topic/HELLOWORLDMDBTopic
 
-Access the application 
+Access the application
 ---------------------
 
 The application will be running at the following URL: <http://localhost:8080/jboss-helloworld-mdb/> and will send some messages to the queue.
@@ -99,7 +104,7 @@ Undeploy the Archive
 
 Run the Quickstart in Red Hat JBoss Developer Studio or Eclipse
 -------------------------------------
-You can also start the server and deploy the quickstarts or run the Arquillian tests from Eclipse using JBoss tools. For general information about how to import a quickstart, add a JBoss EAP server, and build and deploy a quickstart, see [Use JBoss Developer Studio or Eclipse to Run the Quickstarts](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/USE_JBDS.md#use-jboss-developer-studio-or-eclipse-to-run-the-quickstarts) 
+You can also start the server and deploy the quickstarts or run the Arquillian tests from Eclipse using JBoss tools. For general information about how to import a quickstart, add a JBoss EAP server, and build and deploy a quickstart, see [Use JBoss Developer Studio or Eclipse to Run the Quickstarts](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/USE_JBDS.md#use-jboss-developer-studio-or-eclipse-to-run-the-quickstarts)
 
 _NOTE:_ Within JBoss Developer Studio, be sure to define a server runtime environment that uses the `standalone-full.xml` configuration file.
 
@@ -110,7 +115,7 @@ Debug the Application
 If you want to debug the source code of any library in the project, run the following command to pull the source into your local repository. The IDE should then detect it.
 
     mvn dependency:sources
-   
+
 
 
 Build and Deploy the Quickstart - to OpenShift
@@ -154,7 +159,7 @@ This command creates an OpenShift application called `helloworldmdb` and will ru
     Run 'rhc show-app helloworldmdb' for more details about your app.
 
 The create command creates a git repository in the current directory with the same name as the application, in this case, `helloworldmdb`. Notice that the output also reports the URL at which the application can be accessed. Make sure it is available by typing the published url <http://helloworldmdb-YOUR_DOMAIN_NAME.rhcloud.com/> into a browser or use command line tools such as curl or wget. Be sure to replace `YOUR_DOMAIN_NAME` with your OpenShift account domain name.
-        
+
 
 ### Migrate the Quickstart Source
 
@@ -167,7 +172,7 @@ Copy the source for the `helloworld-mdb` quickstart into this new git repository
 
     cp -r QUICKSTART_HOME/helloworld-mdb/src .
     cp QUICKSTART_HOME/helloworld-mdb/pom.xml .
-    
+
 ### Configure the OpenShift Server
 
 HornetQ is enabled by default in `.openshift/config/standalone.xml`. There is nothing to do to be able to send and receive messages from OpenShift.
@@ -180,7 +185,7 @@ You can now deploy the changes to your OpenShift application using git as follow
     git commit -m "helloworld-mdb quickstart on OpenShift"
     git push
 
-The final push command triggers the OpenShift infrastructure to build and deploy the changes. 
+The final push command triggers the OpenShift infrastructure to build and deploy the changes.
 
 Note that the `openshift` profile in the `pom.xml` file is activated by OpenShift. This causes the WAR built by OpenShift to be copied to the `deployments/` directory and deployed without a context path.
 
@@ -221,9 +226,8 @@ This is a benign error that occurs when the status of the deployment is checked 
 When you are finished with the application you can delete it from OpenShift it as follows:
 
         rhc app-delete -a helloworldmdb
-        
-_Note_: There is a limit to the number of applications you can deploy concurrently to OpenShift. If the `rhc app create` command returns an error indicating you have reached that limit, you must delete an existing application before you continue. 
+
+_Note_: There is a limit to the number of applications you can deploy concurrently to OpenShift. If the `rhc app create` command returns an error indicating you have reached that limit, you must delete an existing application before you continue.
 
 * To view the list of your OpenShift applications, type: `rhc domain show`
 * To delete an application from OpenShift, type the following, substituting the application name you want to delete: `rhc app-delete -a APPLICATION_NAME_TO_DELETE`
-
